@@ -1,0 +1,47 @@
+{
+    "http://1rbt.ru/": [
+        "+7 926 887 50 88"
+    ],
+    "http://dom-helper.ru/contacts/": [
+        "+7 985 746 67 60"
+    ],
+    "http://help-kar.ru/address": [
+        "+7 906 724 58 83",
+        "+7 916 162 97 30"
+    ],
+    "http://kvadr-remont.ru/kontaktyi/": [
+        "+7 495 552 05 75",
+        "+7 495 552 42 72",
+        "+7 916 471 33 12"
+    ],
+    "http://m-econom.ru/наши-контакты": [
+        "+7 495 507 46 36"
+    ],
+    "http://masterbosch.ru/contacts/": [
+        "+7 495 664 43 09"
+    ],
+    "http://stroi-otdelka.ru/contact/": [
+        "+7 495 143 10 05",
+        "+7 495 143 21 20"
+    ],
+    "http://wizardom.ru/контакты/": [
+        "8 800 250 58 66"
+    ],
+    "http://www.bitpribor.ru/": [
+        "+7 915 427 39 95"
+    ],
+    "http://www.remontexpress.ru/contacts/": [
+        "+7 495 125 20 88",
+        "+7 495 256 02 96"
+    ],
+    "http://www.telemaster-msk.ru/kontakti.html": [
+        "+7 495 411 38 23"
+    ],
+    "https://hands.ru/company/about": [
+        "+7 495 137 77 67",
+        "+7 499 709 93 52"
+    ],
+    "https://www.dommaster.su/contacts": [
+        "+7 495 642 45 12"
+    ]
+}
