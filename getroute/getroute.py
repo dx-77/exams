@@ -99,8 +99,12 @@ class MyWin(ui.FrmMain):
         res = requests.get(ROUTE_URL, params=self.params)
         if res.status_code == requests.codes.ok:
             res = res.json()
-            info.append(res['routes'][0]['legs'][0]['distance']['text'])
-            info.append(res['routes'][0]['legs'][0]['duration']['text'])
+            if res['routes']:
+                info.append(res['routes'][0]['legs'][0]['distance']['text'])
+                info.append(res['routes'][0]['legs'][0]['duration']['text'])
+            else:
+                info.append('There is no car route between A and B localities!')
+                
             info = '\n'.join(info)
             dlg = wx.MessageDialog(self, info, 'Route', wx.OK)
             dlg.ShowModal()
