@@ -25,7 +25,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 import csv
-import threading
 
 
 SQUARE_FILENAME = 'square.tcv'
@@ -91,47 +90,29 @@ def find_route(f_square, first_xy, end_xy):
     # Соседние ячейки классифицируются в смысле окрестности фон Неймана 
     # Ищется кратчайший ортогональный путь
     def mark_neighbours(x, y, d):
-        if f_square[end_xy[0]][end_xy[1]] != -1:
-            return
-        t1, t2, t3, t4 = False, False, False, False
+        d_coords = [(x, y, d)]
+        while d_coords:
+            if f_square[end_xy[0]][end_xy[1]] != -1:
+                break
 
-        if x > 0 and f_square[x - 1][y] == -1:
-            f_square[x - 1][y] = d + 1
-            t1 = threading.Thread(target=mark_neighbours,
-                                  name='mark_n_t1_%d' % (d + 1),
-                                  args=(x - 1, y, d + 1))
-    
-        if x < len(f_square) - 1 and f_square[x + 1][y] == -1:
-            f_square[x + 1][y] = d + 1
-            t2 = threading.Thread(target=mark_neighbours,
-                                  name='mark_n_t2_%d' % (d + 1),
-                                  args=(x + 1, y, d + 1))
+            x, y, d = d_coords.pop(0)
+
+            if x > 0 and f_square[x - 1][y] == -1:
+                f_square[x - 1][y] = d
+                d_coords.append((x - 1, y, d + 1))
+                        
+            if x < len(f_square) - 1 and f_square[x + 1][y] == -1:
+                f_square[x + 1][y] = d
+                d_coords.append((x + 1, y, d + 1))
+                         
+            if y > 0 and f_square[x][y - 1] == -1:
+                f_square[x][y - 1] = d
+                d_coords.append((x, y - 1, d + 1))
+                        
+            if y < len(f_square) - 1 and f_square[x][y + 1] == -1:
+                f_square[x][y + 1] = d
+                d_coords.append((x, y + 1, d + 1))
        
-        if y > 0 and f_square[x][y - 1] == -1:
-            f_square[x][y - 1] = d + 1
-            t3 = threading.Thread(target=mark_neighbours,
-                                  name='mark_n_t3_%d' % (d + 1),
-                                  args=(x, y - 1, d + 1))
-       
-        if y < len(f_square) - 1 and f_square[x][y + 1] == -1:
-            f_square[x][y + 1] = d + 1
-            t4 = threading.Thread(target=mark_neighbours,
-                                  name='mark_n_t4_%d' % (d + 1),
-                                  args=(x, y + 1, d + 1))
-        
-        if d > 1:
-            while True:
-                threads = str(threading.enumerate())
-                tf1 = threads.find('mark_n_t1_%d' % (d - 1))
-                tf2 = threads.find('mark_n_t2_%d' % (d - 1))
-                tf3 = threads.find('mark_n_t3_%d' % (d - 1))
-                tf4 = threads.find('mark_n_t4_%d' % (d - 1))
-                if tf1 == -1 and tf2 == -1 and tf3 == -1 and tf4 == -1:
-                    break
-        for t in (t1, t2, t3, t4):
-            if t:
-                t.start()
-             
 
     def restore_root(x, y, d):
         if d == 1:
@@ -156,15 +137,12 @@ def find_route(f_square, first_xy, end_xy):
             route.append((x, y + 1))
             restore_root(x, y + 1, d - 1)
             return
-     
+    
+    
     f_square[first_xy[0]][first_xy[1]] = 0
     
-    tcount = threading.active_count()
-    t = threading.Thread(target=mark_neighbours, args=(*first_xy, 0))
-    t.start()
-    while threading.active_count() > tcount:
-        pass
-        
+    mark_neighbours(*first_xy, 1)
+   
     d = f_square[end_xy[0]][end_xy[1]]
 
     if d == -1:
